@@ -37,6 +37,8 @@ module Fluent::Plugin
     config_param :endpoint, :string, :default => nil
     desc 'Compress messages'
     config_param :compression, :string, :default => nil
+    desc 'Set default emulator_host to use in publish requests'
+    config_param :emulator_host, :string, :default => nil
 
     config_section :buffer do
       config_set_default :@type, DEFAULT_BUFFER_TYPE
@@ -60,7 +62,7 @@ module Fluent::Plugin
 
     def start
       super
-      @publisher = Fluent::GcloudPubSub::Publisher.new @project, @key, @autocreate_topic, @dest_project, @endpoint
+      @publisher = Fluent::GcloudPubSub::Publisher.new @project, @key, @autocreate_topic, @dest_project, @endpoint, @emulator_host
     end
 
     def format(tag, time, record)
